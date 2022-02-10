@@ -7,21 +7,19 @@ export class Cliente{
     protected _pais: string
     protected _sexo: string
     protected _tlf: number
-    protected _correo: string
     protected _socio: boolean
     
-    constructor(_dni: string, _nombre: string, _primerApellido: string, _segundoApellido: string, _edad:number,
-         _pais:string, _sexo:string, _tlf:number, _correo:string, _socio:boolean){
-        this._dni = _dni
-        this._nombre = _nombre
-        this._primerApellido = _primerApellido
-        this._segundoApellido = _segundoApellido
-        this._edad = _edad
-        this._pais = _pais
-        this._sexo = _sexo
-        this._tlf = _tlf
-        this._correo = _correo
-        this._socio = _socio
+    constructor(dni: string, nombre: string, primerApellido: string, segundoApellido: string, edad:number,
+         pais:string, sexo:string, tlf:number, socio:boolean){
+        this._dni = dni
+        this._nombre = nombre
+        this._primerApellido = primerApellido
+        this._segundoApellido = segundoApellido
+        this._edad = edad
+        this._pais = pais
+        this._sexo = sexo
+        this._tlf = tlf
+        this._socio = socio
     }
 
     get dni(){
@@ -58,9 +56,5 @@ export class Cliente{
 
     get socio(){
         return this._socio
-    }
-
-    get correo(){
-        return this._correo
     }
 }

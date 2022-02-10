@@ -18,7 +18,7 @@ class DatoRoutes {
         const dni = req.params.dni
         await db.conectarBD()
         .then(async (mensaje) => {
-            const query = await Clientes.findOne({_dni: dni})
+            const query = await Clientes.findOne({ dni: dni})
             res.json(query)
         })
         .catch((mensaje) => {
@@ -40,20 +40,18 @@ class DatoRoutes {
     }
 
     private postCliente = async (req: Request, res: Response) => {
-        const { id, dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, correo, socio } = req.body
+        const { dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, socio } = req.body
         await db.conectarBD()
         const dSchema={
-            _id: id,
-            _dni: dni,
-            _nombre: nombre,
-            _primerApellido: primerApellido,
-            _segundoApellido: segundoApellido,
-            _edad: edad,
-            _pais: pais,
-            _sexo: sexo,
-            _tlf: tlf,
-            _correo: correo,
-            _socio: socio
+            dni: dni,
+            nombre: nombre,
+            primerApellido: primerApellido,
+            segundoApellido: segundoApellido,
+            edad: edad,
+            pais: pais,
+            sexo: sexo,
+            tlf: tlf,
+            socio: socio
         }
         const oSchema = new Clientes(dSchema)
         await oSchema.save()
@@ -66,23 +64,22 @@ class DatoRoutes {
         await db
           .conectarBD()
           .then(async (mensaje) => {
-            const {id} = req.params
-            const { dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, correo, socio } = req.body
+            const {dni} = req.params
+            const { nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, socio } = req.body
             await Clientes.findOneAndUpdate(
               {
-                _id: id,
+                dni: dni,
               },
               {
-                _dni: dni,
-                _nombre: nombre,
-                _primerApellido: primerApellido,
-                _segundoApellido: segundoApellido,
-                _edad: edad,
-                _pais: pais,
-                _sexo: sexo,
-                _tlf: tlf,
-                _correo: correo,
-                _socio: socio
+                dni: dni,
+                nombre: nombre,
+                primerApellido: primerApellido,
+                segundoApellido: segundoApellido,
+                edad: edad,
+                pais: pais,
+                sexo: sexo,
+                tlf: tlf,
+                socio: socio
               },
               {
                 new: true,
@@ -99,20 +96,12 @@ class DatoRoutes {
     }
 
     private deleteCliente = async (req: Request, res: Response) => {
-        const { dni } = req.params
+        const dni  = req.params.dni
         await db.conectarBD()
-        await Clientes.findOneAndDelete(
-                { _dni: dni }
-            )
-            .then( (doc: any) => {
-                    if (doc == null) {
-                        res.send(`No encontrado`)
-                    }else {
-                        res.send('Borrado correcto: '+ doc)
-                    }
-            })
-            .catch( (err: any) => res.send('Error: '+ err)) 
-        db.desconectarBD()
+        await Clientes.findOneAndDelete({ dni: dni })
+            .then( (doc: any) => res.send('Borrado correcto'))
+            .catch( (err: any) => res.send('Error: ' + err))
+        await db.desconectarBD()
     }
 
     misRutas() {

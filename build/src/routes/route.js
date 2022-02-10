@@ -19,7 +19,7 @@ class DatoRoutes {
             const dni = req.params.dni;
             yield database_1.db.conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const query = yield schemaCliente_1.Clientes.findOne({ _dni: dni });
+                const query = yield schemaCliente_1.Clientes.findOne({ dni: dni });
                 res.json(query);
             }))
                 .catch((mensaje) => {
@@ -39,20 +39,18 @@ class DatoRoutes {
             yield database_1.db.desconectarBD();
         });
         this.postCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { id, dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, correo, socio } = req.body;
+            const { dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, socio } = req.body;
             yield database_1.db.conectarBD();
             const dSchema = {
-                _id: id,
-                _dni: dni,
-                _nombre: nombre,
-                _primerApellido: primerApellido,
-                _segundoApellido: segundoApellido,
-                _edad: edad,
-                _pais: pais,
-                _sexo: sexo,
-                _tlf: tlf,
-                _correo: correo,
-                _socio: socio
+                dni: dni,
+                nombre: nombre,
+                primerApellido: primerApellido,
+                segundoApellido: segundoApellido,
+                edad: edad,
+                pais: pais,
+                sexo: sexo,
+                tlf: tlf,
+                socio: socio
             };
             const oSchema = new schemaCliente_1.Clientes(dSchema);
             yield oSchema.save()
@@ -64,21 +62,20 @@ class DatoRoutes {
             yield database_1.db
                 .conectarBD()
                 .then((mensaje) => __awaiter(this, void 0, void 0, function* () {
-                const { id } = req.params;
-                const { dni, nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, correo, socio } = req.body;
+                const { dni } = req.params;
+                const { nombre, primerApellido, segundoApellido, edad, pais, sexo, tlf, socio } = req.body;
                 yield schemaCliente_1.Clientes.findOneAndUpdate({
-                    _id: id,
+                    dni: dni,
                 }, {
-                    _dni: dni,
-                    _nombre: nombre,
-                    _primerApellido: primerApellido,
-                    _segundoApellido: segundoApellido,
-                    _edad: edad,
-                    _pais: pais,
-                    _sexo: sexo,
-                    _tlf: tlf,
-                    _correo: correo,
-                    _socio: socio
+                    dni: dni,
+                    nombre: nombre,
+                    primerApellido: primerApellido,
+                    segundoApellido: segundoApellido,
+                    edad: edad,
+                    pais: pais,
+                    sexo: sexo,
+                    tlf: tlf,
+                    socio: socio
                 }, {
                     new: true,
                 })
@@ -91,19 +88,12 @@ class DatoRoutes {
             database_1.db.desconectarBD();
         });
         this.deleteCliente = (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { dni } = req.params;
+            const dni = req.params.dni;
             yield database_1.db.conectarBD();
-            yield schemaCliente_1.Clientes.findOneAndDelete({ _dni: dni })
-                .then((doc) => {
-                if (doc == null) {
-                    res.send(`No encontrado`);
-                }
-                else {
-                    res.send('Borrado correcto: ' + doc);
-                }
-            })
+            yield schemaCliente_1.Clientes.findOneAndDelete({ dni: dni })
+                .then((doc) => res.send('Borrado correcto'))
                 .catch((err) => res.send('Error: ' + err));
-            database_1.db.desconectarBD();
+            yield database_1.db.desconectarBD();
         });
         this._router = (0, express_1.Router)();
     }
